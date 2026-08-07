@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Anamnesis: Embarazo y Primeros Años — Jorge Cucurella</title>
+<style>
+:root{--bg:#FAF7F4;--card:#fff;--bd:#E8E0D8;--tx:#2C2420;--mu:#8C7B72;--ac:#CF6642;--al:#F5E6DF;}
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif;margin:0;min-height:100vh;-webkit-text-size-adjust:100%;}
+.wrap{max-width:640px;margin:0 auto;padding:0 0 60px;}
+#avisoJS{background:#C4902A;color:#fff;padding:14px 18px;font-family:system-ui,sans-serif;font-size:13.5px;text-align:center;line-height:1.55;}
+#avisoJS strong{text-decoration:underline;}
+.hdr{background:var(--ac);color:#fff;padding:22px 20px;text-align:center;}
+.hdr h1{font-size:18px;margin:0 0 4px;font-weight:600;}
+.hdr p{margin:0;font-size:13px;opacity:.92;font-family:system-ui,sans-serif;}
+.intro{background:var(--al);margin:18px 16px;padding:16px 18px;border-radius:10px;font-size:14px;line-height:1.55;color:#5A4A3F;}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:16px;padding:18px 18px 20px;}
+.sec-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac);font-family:system-ui,sans-serif;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--bd);}
+.grp-title{font-size:13px;font-weight:700;color:var(--tx);margin:20px 0 12px;font-family:system-ui,sans-serif;}
+.grp-title:first-child{margin-top:0;}
+.field{margin-bottom:16px;}
+label.lbl{display:block;font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:6px;font-family:Georgia,serif;line-height:1.4;}
+.hint{font-size:12px;color:var(--mu);margin-top:4px;font-family:system-ui,sans-serif;}
+input[type=text],input[type=date],textarea{width:100%;padding:11px 13px;border-radius:8px;border:1px solid var(--bd);font-size:15px;font-family:Georgia,serif;background:var(--bg);color:var(--tx);outline:none;-webkit-appearance:none;appearance:none;}
+input:focus,textarea:focus{border-color:var(--ac);}
+textarea{resize:vertical;min-height:70px;font-family:Georgia,serif;font-size:14.5px;}
+.btn{display:inline-block;padding:13px 24px;border-radius:24px;border:none;font-size:15px;font-weight:600;font-family:system-ui,sans-serif;cursor:pointer;width:100%;text-align:center;}
+.btn-primary{background:var(--ac);color:#fff;box-shadow:0 2px 10px rgba(207,102,66,.3);}
+.btn-secondary{background:var(--card);border:1px solid var(--bd);color:var(--tx);margin-top:10px;}
+.foot-btns{margin:24px 16px 0;}
+.err{color:#B23A3A;font-size:13px;font-family:system-ui,sans-serif;margin-top:8px;display:none;}
+#vistaResumen{display:none;}
+.rv-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:16px;padding:18px 18px 20px;}
+.rv-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac);font-family:system-ui,sans-serif;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--bd);}
+.rv-row{font-size:14.5px;line-height:1.6;margin:0 0 12px;}
+.rv-k{font-weight:600;color:var(--tx);font-size:13.5px;font-family:Georgia,serif;display:block;margin-bottom:3px;}
+.rv-sub{font-size:13px;font-weight:700;color:var(--ac);margin:16px 0 8px;font-family:system-ui,sans-serif;}
+.rv-sub:first-of-type{margin-top:4px;}
+.rv-muted{color:var(--mu);font-style:italic;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--tx);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-family:system-ui,sans-serif;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;max-width:80%;text-align:center;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div id="avisoJS">Si no ves las preguntas o los botones no responden, tu dispositivo está mostrando solo una vista previa. Toca el ícono de compartir y elige <strong>"Abrir en Safari"</strong> (o en tu navegador) para completar la ficha correctamente.</div>
+<div class="wrap">
+  <div class="hdr">
+    <h1>Anamnesis: Embarazo, Nacimiento y Primeros Años</h1>
+    <p>Jorge Cucurella · Psicólogo Clínico</p>
+  </div>
+
+  <div id="vistaForm">
+    <div class="intro">Esta ficha busca reconstruir, en conjunto entre tú y tu madre, cómo fue tu propio embarazo, nacimiento y primeros años de vida — una etapa que ayuda mucho a entender mejor tu proceso actual. La completan juntos, cada una/o aportando la parte que mejor recuerde. No hay respuestas correctas o incorrectas, y pueden dejar en blanco cualquier pregunta que prefieran no responder por ahora. Toda la información es estrictamente confidencial.</div>
+
+    <form id="f" onsubmit="return false;">
+      <div class="card">
+        <div class="sec-title">Datos de esta ficha</div>
+        <div class="field"><label class="lbl">Nombre del paciente</label><input type="text" id="nombreNino" required></div>
+        <div class="field"><label class="lbl">Edad del paciente</label><input type="text" id="edadPaciente" placeholder="Años"></div>
+        <div class="field"><label class="lbl">Edad de la madre</label><input type="text" id="edadMadre" placeholder="Años"></div>
+        <div class="field"><label class="lbl">Fecha</label><input type="date" id="fecha"></div>
+      </div>
+
+      <div id="seccionesContainer"></div>
+
+      <div class="foot-btns">
+        <button type="button" class="btn btn-primary" onclick="verResumen()">Revisar y finalizar</button>
+        <div class="err" id="errNombre">Por favor, completa el nombre del paciente antes de continuar.</div>
+      </div>
+    </form>
+  </div>
+
+  <div id="vistaResumen">
+    <div class="intro">Esta es la ficha completa, tal como la respondiste. Revísala y, cuando estés lista/o, envíasela a Jorge.</div>
+    <div id="resumenView"></div>
+    <div class="foot-btns">
+      <button type="button" class="btn btn-primary" onclick="enviarArchivo()">📤 Enviar archivo respondido</button>
+      <button type="button" class="btn btn-secondary" onclick="volverForm()">← Volver y corregir</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════ CONTENIDO ════════
+const SECCIONES = [
+  { titulo: 'Vida en el hogar, conyugal y laboral de la madre', subs: [
+    { sub: '1. Vida doméstica', preguntas: [
+      '¿Cómo era tu vida cotidiana durante el embarazo y los primeros años de tu hijo/a?',
+      '¿Qué tipo de apoyo recibías en casa para las tareas diarias?',
+      '¿Hubo cambios significativos en el hogar durante ese período (mudanzas, conflictos, remodelaciones, etc.)?',
+      '¿Te sentías cómoda y segura en tu entorno doméstico?',
+      '¿Consumías alcohol, cigarrillo, medicamentos o alguna droga? ¿Cuánto?',
+    ]},
+    { sub: '2. Relación conyugal', preguntas: [
+      '¿Cómo describirías tu relación con tu pareja durante el embarazo?',
+      '¿Cómo fue su apoyo emocional o práctico durante los primeros años de vida de tu hijo/a?',
+      '¿Hubo algún cambio en la relación de pareja tras el nacimiento del bebé?',
+      'Si estabas criando a tu hijo/a sin una pareja presente, ¿cómo te afectó emocionalmente esa experiencia?',
+    ]},
+    { sub: '3. Vida laboral', preguntas: [
+      '¿Trabajabas durante el embarazo? ¿Cómo era tu experiencia en el trabajo en ese período?',
+      '¿Volviste al trabajo después del nacimiento? Si es así, ¿cómo fue el proceso de equilibrar el trabajo y la crianza?',
+      '¿Qué tipo de apoyo recibiste en tu lugar de trabajo (licencias, flexibilidad, comprensión)?',
+      '¿Cómo impactaron tus responsabilidades laborales en tu bienestar emocional y físico?',
+    ]},
+  ]},
+  { titulo: 'Embarazo, nacimiento y primeros cuatro años', subs: [
+    { sub: '1. Sobre el embarazo', preguntas: [
+      '¿Cómo te sentiste emocionalmente durante el embarazo?',
+      '¿Cómo describirías tu nivel de estrés o tranquilidad en ese período?',
+      '¿Hubo algún evento significativo (positivo o negativo) durante el embarazo que recuerdes?',
+      '¿Cómo fue tu estado físico durante esos meses? ¿Tuviste alguna complicación médica o te sentiste bien en general?',
+      '¿Qué esperabas o soñabas para tu bebé mientras estabas embarazada?',
+    ]},
+    { sub: '2. Sobre el nacimiento', preguntas: [
+      '¿Cómo fue la experiencia del parto? ¿Fue como esperabas?',
+      '¿Cómo te sentiste inmediatamente después del nacimiento, física y emocionalmente?',
+      '¿Tuviste apoyo en el período postparto? ¿Quién estuvo contigo en esos momentos?',
+    ]},
+    { sub: '3. Primeros meses de vida del bebé', preguntas: [
+      '¿Cómo describirías a tu bebé en sus primeros cuatro meses? ¿Parecía tranquilo, inquieto, dormía bien?',
+      '¿Cómo te sentías emocionalmente en esa etapa?',
+      '¿Habías oído hablar de la depresión posparto? Si la experimentaste, ¿cómo la viviste?',
+      '¿Cómo era tu rutina diaria con tu bebé?',
+      '¿Qué recuerdos te traen las primeras veces que tuviste contacto piel con piel, lo alimentaste o lo consolaste?',
+    ]},
+    { sub: '4. Primeros cuatro años de vida', preguntas: [
+      '¿Cómo describirías la personalidad de tu hijo/a en esos años?',
+      '¿Hubo momentos en que se mostrara particularmente sensible o emocional?',
+      '¿Cómo eran las interacciones familiares en ese período? ¿Sentías que tenías suficiente tiempo y energía para estar presente?',
+      '¿Hubo situaciones familiares o personales que influyeran en esos primeros años (cambios de casa, trabajo, problemas financieros, etc.)?',
+      '¿Recuerdas algo que hiciera a tu hijo/a particularmente feliz o tranquilo en esa etapa?',
+    ]},
+    { sub: '5. Reflexión general', preguntas: [
+      'Si tuvieras que describir los primeros años de vida de tu hijo/a en pocas palabras, ¿qué dirías?',
+      '¿Qué hubieras hecho diferente si hubieras tenido más apoyo o recursos?',
+      '¿Cómo crees que esos primeros años pudieron influir en la persona que es hoy?',
+    ]},
+  ]},
+];
+
+// ════════ RENDER INICIAL (una sola vez) ════════
+function render(){
+  document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+
+  let html = '';
+  SECCIONES.forEach((seccion, si) => {
+    html += `<div class="card"><div class="sec-title">${seccion.titulo}</div>`;
+    seccion.subs.forEach((subseccion, ui) => {
+      html += `<div class="grp-title">${subseccion.sub}</div>`;
+      subseccion.preguntas.forEach((pregunta, qi) => {
+        const id = `q_${si}_${ui}_${qi}`;
+        html += `<div class="field"><label class="lbl" for="${id}">${pregunta}</label><textarea id="${id}"></textarea></div>`;
+      });
+    });
+    html += `</div>`;
+  });
+  document.getElementById('seccionesContainer').innerHTML = html;
+
+  // Si llegamos hasta aquí, el JavaScript sí está corriendo: ocultamos el aviso.
+  document.getElementById('avisoJS').style.display = 'none';
+}
+render();
+
+// ════════ HELPERS ════════
+function val(id){ const el = document.getElementById(id); return el ? (el.value||'').trim() : ''; }
+function escapeHTML(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+function formatoFechaLegible(iso){
+  const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  if(!iso) return '';
+  const [y,m,d] = iso.split('-').map(Number);
+  if(!y||!m||!d) return iso;
+  return `${d} de ${MESES[m-1]} de ${y}`;
+}
+
+// ════════ CONSTRUCCIÓN DEL CONTENIDO (HTML) ════════
+function filaHTML(etq, valor){
+  return `<p class="rv-row"><span class="rv-k">${escapeHTML(etq)}</span>${escapeHTML(valor || 'No respondido.')}</p>`;
+}
+
+function construirContenidoHTML(){
+  let h = '';
+
+  h += `<div class="rv-card"><div class="rv-title">Datos de esta ficha</div>`;
+  h += filaHTML('Nombre del paciente', val('nombreNino'));
+  h += filaHTML('Edad del paciente', val('edadPaciente'));
+  h += filaHTML('Edad de la madre', val('edadMadre'));
+  h += filaHTML('Fecha', formatoFechaLegible(val('fecha')));
+  h += `</div>`;
+
+  SECCIONES.forEach((seccion, si) => {
+    h += `<div class="rv-card"><div class="rv-title">${escapeHTML(seccion.titulo)}</div>`;
+    seccion.subs.forEach((subseccion, ui) => {
+      h += `<p class="rv-sub">${escapeHTML(subseccion.sub)}</p>`;
+      subseccion.preguntas.forEach((pregunta, qi) => {
+        const id = `q_${si}_${ui}_${qi}`;
+        h += filaHTML(pregunta, val(id));
+      });
+    });
+    h += `</div>`;
+  });
+
+  return h;
+}
+
+const ESTILO_SNAPSHOT = `
+:root{--bg:#FAF7F4;--card:#fff;--bd:#E8E0D8;--tx:#2C2420;--mu:#8C7B72;--ac:#CF6642;--al:#F5E6DF;}
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif;margin:0;}
+.wrap{max-width:640px;margin:0 auto;padding:0 0 40px;}
+.hdr{background:var(--ac);color:#fff;padding:22px 20px;text-align:center;}
+.hdr h1{font-size:18px;margin:0 0 4px;font-weight:600;}
+.hdr p{margin:0;font-size:13px;opacity:.92;font-family:system-ui,sans-serif;}
+.rv-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:16px;padding:18px 18px 20px;}
+.rv-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac);font-family:system-ui,sans-serif;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--bd);}
+.rv-row{font-size:14.5px;line-height:1.6;margin:0 0 12px;}
+.rv-k{font-weight:600;color:var(--tx);font-size:13.5px;font-family:Georgia,serif;display:block;margin-bottom:3px;}
+.rv-sub{font-size:13px;font-weight:700;color:var(--ac);margin:16px 0 8px;font-family:system-ui,sans-serif;}
+.rv-sub:first-of-type{margin-top:4px;}
+.rv-muted{color:var(--mu);font-style:italic;}
+`;
+
+function construirSnapshotHTML(){
+  const contenido = construirContenidoHTML();
+  const nombre = val('nombreNino') || 'Paciente';
+  return `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anamnesis Embarazo — ${escapeHTML(nombre)}</title>
+<style>${ESTILO_SNAPSHOT}</style></head>
+<body><div class="wrap">
+<div class="hdr"><h1>Anamnesis: Embarazo, Nacimiento y Primeros Años</h1><p>Jorge Cucurella · Psicólogo Clínico — respondida sobre ${escapeHTML(nombre)}</p></div>
+${contenido}
+</div></body></html>`;
+}
+
+// ════════ NAVEGACIÓN ════════
+function verResumen(){
+  if(!val('nombreNino')){
+    document.getElementById('errNombre').style.display='block';
+    document.getElementById('nombreNino').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  document.getElementById('errNombre').style.display='none';
+  document.getElementById('resumenView').innerHTML = construirContenidoHTML();
+  document.getElementById('vistaForm').style.display='none';
+  document.getElementById('vistaResumen').style.display='block';
+  window.scrollTo(0,0);
+}
+function volverForm(){
+  document.getElementById('vistaResumen').style.display='none';
+  document.getElementById('vistaForm').style.display='block';
+  window.scrollTo(0,0);
+}
+
+// ════════ ENVÍO ════════
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+async function enviarArchivo(){
+  const htmlDoc = construirSnapshotHTML();
+  const nombreArchivo = `Anamnesis_${(val('nombreNino')||'Paciente').replace(/[^a-zA-Z0-9]+/g,'_')}_${new Date().toISOString().split('T')[0]}.html`;
+  const file = new File([htmlDoc], nombreArchivo, {type:'text/html'});
+
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{
+      await navigator.share({files:[file], title:'Anamnesis Embarazo y Primeros Años'});
+      return;
+    }catch(e){ return; /* la persona canceló el envío */ }
+  }
+  const url = URL.createObjectURL(file);
+  const a = document.createElement('a');
+  a.href = url; a.download = nombreArchivo; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Se descargó el archivo. Adjúntalo a tu mensaje para enviarlo.');
+}
+</script>
+</body>
+</html>
