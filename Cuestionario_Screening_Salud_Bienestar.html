@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Ficha de Salud y Bienestar — Jorge Cucurella</title>
+<style>
+:root{--bg:#FAF7F4;--card:#fff;--bd:#E8E0D8;--tx:#2C2420;--mu:#8C7B72;--ac:#CF6642;--al:#F5E6DF;--pos:#7B9E6B;--pl:#EAF2E6;}
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif;margin:0;min-height:100vh;-webkit-text-size-adjust:100%;}
+.wrap{max-width:640px;margin:0 auto;padding:0 0 60px;}
+#avisoJS{background:#C4902A;color:#fff;padding:14px 18px;font-family:system-ui,sans-serif;font-size:13.5px;text-align:center;line-height:1.55;}
+#avisoJS strong{text-decoration:underline;}
+.hdr{background:var(--ac);color:#fff;padding:22px 20px;text-align:center;}
+.hdr h1{font-size:19px;margin:0 0 4px;font-weight:600;}
+.hdr p{margin:0;font-size:13px;opacity:.92;font-family:system-ui,sans-serif;}
+.intro{background:var(--al);margin:18px 16px;padding:16px 18px;border-radius:10px;font-size:14px;line-height:1.55;color:#5A4A3F;}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:16px;padding:18px 18px 20px;}
+.sec-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac);font-family:system-ui,sans-serif;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--bd);}
+.grp-title{font-size:13px;font-weight:700;color:var(--tx);margin:18px 0 10px;font-family:system-ui,sans-serif;}
+.grp-title:first-child{margin-top:0;}
+.field{margin-bottom:16px;}
+label.lbl{display:block;font-size:12px;font-weight:700;color:var(--mu);margin-bottom:6px;font-family:system-ui,sans-serif;}
+.hint{font-size:12px;color:var(--mu);margin-top:4px;font-family:system-ui,sans-serif;}
+input[type=text],input[type=date],input[type=number],textarea,select{width:100%;padding:11px 13px;border-radius:8px;border:1px solid var(--bd);font-size:15px;font-family:Georgia,serif;background:var(--bg);color:var(--tx);outline:none;-webkit-appearance:none;appearance:none;}
+select{font-family:system-ui,sans-serif;font-size:14px;}
+input:focus,textarea:focus,select:focus{border-color:var(--ac);}
+textarea{resize:vertical;min-height:60px;font-family:system-ui,sans-serif;font-size:14px;}
+.fnac-row{display:flex;gap:8px;}
+.fnac-row select{flex:1;}
+.cond-row{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;padding:9px 0;border-bottom:1px solid var(--al);}
+.cond-row:last-child{border-bottom:none;}
+.pill{position:absolute;opacity:0;width:0;height:0;}
+.pill-lbl{padding:9px 14px;border-radius:20px;border:1px solid var(--bd);font-size:13px;cursor:pointer;background:var(--bg);transition:all .15s;font-family:system-ui,sans-serif;user-select:none;display:inline-block;}
+.pill:checked + .pill-lbl{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:600;}
+.cond-lbl{flex:1 1 auto;min-width:0;}
+.cond-anio{width:56px;flex:0 0 56px;padding:8px 4px;border-radius:7px;border:1px solid var(--bd);font-size:12px;font-family:system-ui,sans-serif;background:var(--bg);text-align:center;}
+.pill-group{display:flex;flex-wrap:wrap;gap:8px;}
+.scale-group{display:flex;flex-wrap:wrap;gap:6px;}
+.scale-group .pill-lbl{padding:9px 0;width:34px;text-align:center;}
+.scale-lbls{font-size:11px;color:var(--mu);margin-top:8px;font-family:system-ui,sans-serif;text-align:center;}
+.sust-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;}
+.sust-row .cond-lbl{min-width:220px;}
+.sust-row input[type=text]{flex:1;min-width:160px;padding:8px 10px;font-size:13px;}
+.btn{display:inline-block;padding:13px 24px;border-radius:24px;border:none;font-size:15px;font-weight:600;font-family:system-ui,sans-serif;cursor:pointer;width:100%;text-align:center;}
+.btn-primary{background:var(--ac);color:#fff;box-shadow:0 2px 10px rgba(207,102,66,.3);}
+.btn-secondary{background:var(--card);border:1px solid var(--bd);color:var(--tx);margin-top:10px;}
+.foot-btns{margin:24px 16px 0;}
+.err{color:#B23A3A;font-size:13px;font-family:system-ui,sans-serif;margin-top:8px;display:none;}
+#vistaResumen{display:none;}
+.rv-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:16px;padding:18px 18px 20px;}
+.rv-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac);font-family:system-ui,sans-serif;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--bd);}
+.rv-row{font-size:14.5px;line-height:1.6;margin:0 0 8px;}
+.rv-k{font-weight:700;color:var(--mu);font-size:12px;font-family:system-ui,sans-serif;text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:2px;}
+.rv-sub{font-size:13px;font-weight:700;color:var(--tx);margin:14px 0 6px;font-family:system-ui,sans-serif;}
+.rv-sub:first-of-type{margin-top:4px;}
+.rv-muted{color:var(--mu);font-style:italic;}
+.rv-list{margin:0 0 8px;padding-left:20px;font-size:14.5px;line-height:1.6;}
+.rv-list li{margin-bottom:3px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--tx);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-family:system-ui,sans-serif;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;max-width:80%;text-align:center;}
+.toast.show{opacity:1;}
+@media (max-width:380px){
+  .cond-row{flex-wrap:wrap;}
+  .cond-anio{flex:0 0 70px;}
+}
+</style>
+</head>
+<body>
+<div id="avisoJS">Si no ves las preguntas o los botones no responden, tu dispositivo está mostrando solo una vista previa. Toca el ícono de compartir y elige <strong>"Abrir en Safari"</strong> (o en tu navegador) para completar la ficha correctamente.</div>
+<div class="wrap">
+  <div class="hdr">
+    <h1>📋 Ficha de Salud y Bienestar</h1>
+    <p>Jorge Cucurella · Psicólogo Clínico — Inicio de Proceso Psicoterapéutico</p>
+  </div>
+
+  <div id="vistaForm">
+    <div class="intro">Esta ficha tiene como objetivo conocer algunos aspectos generales de tu salud física. El cuerpo y la mente están profundamente interconectados, y ciertas condiciones físicas o metabólicas pueden influir en nuestro bienestar emocional, energía y estado de ánimo. Agradezco tu precisión al completarla. Toda la información aquí vertida es estrictamente confidencial.</div>
+
+    <form id="f" onsubmit="return false;">
+      <div class="card">
+        <div class="sec-title">Datos personales</div>
+        <div class="field"><label class="lbl">Nombre completo</label><input type="text" id="nombre" required></div>
+        <div class="field"><label class="lbl">Fecha de nacimiento</label>
+          <div class="fnac-row">
+            <select id="fnacDia" onchange="calcEdad()"></select>
+            <select id="fnacMes" onchange="calcEdad()"></select>
+            <select id="fnacAnio" onchange="calcEdad()"></select>
+          </div>
+          <div class="hint" id="edadTxt"></div>
+        </div>
+        <div class="field"><label class="lbl">Sexo asignado al nacer</label><input type="text" id="sexo"></div>
+        <div class="field"><label class="lbl">Identidad de género</label><input type="text" id="genero"></div>
+        <div class="field"><label class="lbl">Fecha de esta entrevista</label><input type="date" id="fentrevista"></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title">1. Historial médico relevante</div>
+        <div class="field"><label class="lbl">¿Qué enfermedades tienes actualmente, o has tenido de forma crónica?</label><textarea id="enfermedadesActuales" placeholder="Cuéntalo con tus palabras, como lo dirías en una consulta."></textarea></div>
+        <div class="hint" style="margin:4px 0 10px;">Además, marca a continuación las condiciones específicas que hayan sido diagnosticadas por un profesional y, si lo recuerdas, indica el año aproximado.</div>
+        <div id="condContainer"></div>
+        <div class="field" style="margin-top:16px;"><label class="lbl">¿Otra enfermedad crónica o recurrente que no esté en la lista? ¿Cuál o cuáles?</label><textarea id="otraEnf"></textarea></div>
+        <div class="field"><label class="lbl">Medicamentos o suplementos que tomas actualmente de forma regular</label><textarea id="medicamentos" placeholder="Nombre, dosis y motivo. Deja en blanco si no tomas ninguno."></textarea></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title">2. Exámenes de salud y hábitos de bienestar</div>
+        <div class="grp-title">¿Te has realizado alguno de estos exámenes en los últimos 5 años?</div>
+        <div id="examContainer" class="pill-group"></div>
+        <div class="field" style="margin-top:14px;"><label class="lbl">Otros exámenes relevantes</label><textarea id="otrosExamenes"></textarea></div>
+        <div class="field"><label class="lbl">Actividad física regular</label><textarea id="actividadFisica" placeholder="Qué tipo y con qué frecuencia. Deja en blanco si no realizas actividad física regular."></textarea></div>
+        <div class="grp-title">Consumo habitual de sustancias</div>
+        <div id="sustContainer"></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title">3. Energía, estado de ánimo y manifestaciones somáticas</div>
+        <div class="field"><label class="lbl">¿Cuántas horas duermes cada noche, en promedio?</label><input type="number" id="horasSueno" min="0" max="24" step="0.5" style="max-width:120px;"></div>
+        <div class="field"><label class="lbl">¿Cómo describirías tu energía diaria basal?</label><div class="pill-group" id="energiaContainer"></div></div>
+        <div class="field"><label class="lbl">¿Cómo describirías tu estado de ánimo en los últimos 3 meses? (puedes marcar varias)</label><div class="pill-group" id="animoContainer"></div></div>
+        <div class="field"><label class="lbl">¿Cambios de peso o apetito recientes sin razón aparente?</label><div class="pill-group" id="pesoContainer"></div></div>
+        <div class="field"><label class="lbl">Síntomas físicos experimentados con frecuencia</label><div class="pill-group" id="sintFisContainer"></div></div>
+        <div class="field"><label class="lbl">Nivel de estrés percibido actual</label>
+          <div class="scale-group" id="estresContainer"></div>
+          <div class="scale-lbls">1 = sin estrés &nbsp;·&nbsp; 10 = extremadamente estresado/a</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title">4. Salud hormonal y transiciones biológicas</div>
+        <div class="field"><label class="lbl">¿En qué etapa te encuentras actualmente?</label><div class="pill-group" id="etapaContainer"></div></div>
+        <div class="field"><label class="lbl">Síntomas experimentados de forma recurrente (puedes marcar varios)</label><div class="pill-group" id="sintHormContainer"></div></div>
+        <div class="field"><label class="lbl">Tratamiento o acompañamiento médico por estos síntomas</label><textarea id="ttoHormonal" placeholder="Qué tipo de tratamiento o terapia de reemplazo. Deja en blanco si no has recibido."></textarea></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title">5. Agrega lo que te parezca relevante</div>
+        <textarea id="relevante" style="min-height:90px;"></textarea>
+      </div>
+
+      <div class="foot-btns">
+        <button type="button" class="btn btn-primary" onclick="verResumen()">Revisar y finalizar</button>
+        <div class="err" id="errNombre">Por favor, completa tu nombre completo antes de continuar.</div>
+      </div>
+    </form>
+  </div>
+
+  <div id="vistaResumen">
+    <div class="intro">Esta es la ficha completa, tal como la respondiste. Revísala y, cuando estés listo/a, envíasela a Jorge.</div>
+    <div id="resumenView"></div>
+    <div class="foot-btns">
+      <button type="button" class="btn btn-primary" onclick="enviarArchivo()">📤 Enviar archivo respondido</button>
+      <button type="button" class="btn btn-secondary" onclick="volverForm()">← Volver y corregir</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════ CONTENIDO ════════
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const CONDICIONES = [
+  {grupo:'Condiciones endocrinas, metabólicas y nutricionales', items:[
+    'Hipotiroidismo','Hipertiroidismo','Tiroiditis de Hashimoto','Síndrome de Cushing',
+    'Déficit de testosterona/estrógenos','Resistencia a la insulina / Diabetes',
+    'Deficiencia de vitamina B12 / Ácido fólico','Anemia ferropénica','Déficit de vitamina D','Enfermedad celíaca']},
+  {grupo:'Condiciones neurológicas, autoinmunes y de dolor crónico', items:[
+    'Lupus eritematoso sistémico o Esclerosis múltiple','Enfermedad de Parkinson','Síndrome de piernas inquietas',
+    'Déficit de dopamina o serotonina (diagnosticado clínicamente)','Fibromialgia o Síndrome de dolor crónico generalizado',
+    'Síndrome de fatiga crónica o Dolor crónico primario']},
+  {grupo:'Sistemas cardiorrespiratorio y gastrointestinal', items:[
+    'Hipertensión arterial','Apnea del sueño','Síndrome de intestino irritable',
+    'Enfermedad inflamatoria intestinal (Crohn, colitis ulcerosa)']},
+];
+const EXAMENES = ['Perfil tiroideo (TSH, T3, T4 libre)','Glucosa e insulina en ayunas','Hemograma completo y ferritina',
+  'Vitamina B12 y ácido fólico','Cortisol plasmático','Polisomnografía (Estudio del sueño)'];
+const SUSTANCIAS = [
+  {id:'alcohol', l:'Alcohol'}, {id:'tabaco', l:'Tabaco'},
+  {id:'cafe', l:'Café en grandes cantidades'}, {id:'drogas', l:'Drogas recreativas'}];
+const ENERGIA = ['Normal','Baja','Muy baja (fatiga extrema o limitante)'];
+const ANIMO = ['Estable','Ansioso/a','Bajo estado de ánimo / desánimo','Cambiante o inestable'];
+const PESO = ['Ninguno','Aumento de peso','Pérdida de peso'];
+const SINT_FISICOS = ['Palpitaciones o taquicardia','Problemas digestivos recurrentes','Mareos o inestabilidad',
+  'Dolores musculares o articulares persistentes','Aturdimiento / mente nublada ("niebla mental")','Dolores de cabeza o migrañas frecuentes'];
+const ETAPA = ['Menstruación regular','Perimenopausia (fase de transición con irregularidades)','Menopausia natural',
+  'Menopausia temprana (antes de los 40 años)','Menopausia inducida (quirúrgica o por tratamiento médico)','Postmenopausia',
+  'No aplica / prefiero no responder'];
+const SINT_HORM = ['Bochornos, sofocos o calores súbitos','Sudoración nocturna','Insomnio o despertares nocturnos frecuentes',
+  'Cambios marcados de humor o irritabilidad','Ansiedad, angustia o episodios depresivos nuevos','Disminución notoria del deseo sexual',
+  'Sequedad vaginal o molestias en las relaciones sexuales','Fatiga generalizada o disminución de la fuerza física',
+  'Aumento de peso concentrado en la zona abdominal','Dificultad para concentrarse / Niebla mental',
+  'Dolores articulares o musculares de origen difuso','Piel extremadamente seca o caída acentuada del cabello'];
+
+// ════════ RENDER INICIAL (una sola vez) ════════
+function pill(name, value, id, type){
+  return `<input type="${type}" class="pill" id="${id}" name="${name}" value="${value}"><label class="pill-lbl" for="${id}">${value}</label>`;
+}
+
+function render(){
+  document.getElementById('fentrevista').value = new Date().toISOString().split('T')[0];
+
+  let diaHtml = '<option value="">Día</option>';
+  for(let d=1; d<=31; d++) diaHtml += `<option value="${d}">${d}</option>`;
+  document.getElementById('fnacDia').innerHTML = diaHtml;
+
+  let mesHtml = '<option value="">Mes</option>';
+  MESES.forEach((m,i) => mesHtml += `<option value="${i+1}">${m}</option>`);
+  document.getElementById('fnacMes').innerHTML = mesHtml;
+
+  let anioHtml = '<option value="">Año</option>';
+  const nowY = new Date().getFullYear();
+  for(let y=nowY; y>=nowY-110; y--) anioHtml += `<option value="${y}">${y}</option>`;
+  document.getElementById('fnacAnio').innerHTML = anioHtml;
+
+  let condHtml = '';
+  CONDICIONES.forEach((g,gi) => {
+    condHtml += `<div class="grp-title">${g.grupo}</div>`;
+    g.items.forEach((item,ii) => {
+      const id = `cond_${gi}_${ii}`;
+      condHtml += `<div class="cond-row"><input type="checkbox" class="pill" id="${id}" name="cond" value="${item}"><label class="pill-lbl cond-lbl" for="${id}">${item}</label><input type="text" class="cond-anio" id="anio_${id}" placeholder="Año"></div>`;
+    });
+  });
+  document.getElementById('condContainer').innerHTML = condHtml;
+
+  document.getElementById('examContainer').innerHTML = EXAMENES.map((e,i)=>pill('examenes',e,'ex_'+i,'checkbox')).join('');
+
+  let sustHtml = '';
+  SUSTANCIAS.forEach(s => {
+    sustHtml += `<div class="sust-row">${pill('sust',s.l,'sust_'+s.id,'checkbox')}<input type="text" id="detalle_${s.id}" placeholder="Frecuencia / cantidad"></div>`;
+  });
+  document.getElementById('sustContainer').innerHTML = sustHtml;
+
+  document.getElementById('energiaContainer').innerHTML = ENERGIA.map((e,i)=>pill('energia',e,'en_'+i,'radio')).join('');
+  document.getElementById('animoContainer').innerHTML = ANIMO.map((e,i)=>pill('animo',e,'an_'+i,'checkbox')).join('');
+  document.getElementById('pesoContainer').innerHTML = PESO.map((e,i)=>pill('peso',e,'pe_'+i,'radio')).join('');
+  document.getElementById('sintFisContainer').innerHTML = SINT_FISICOS.map((e,i)=>pill('sintfis',e,'sf_'+i,'checkbox')).join('');
+  document.getElementById('etapaContainer').innerHTML = ETAPA.map((e,i)=>pill('etapa',e,'et_'+i,'radio')).join('');
+  document.getElementById('sintHormContainer').innerHTML = SINT_HORM.map((e,i)=>pill('sinthorm',e,'sh_'+i,'checkbox')).join('');
+
+  let estresHtml = '';
+  for(let i=1;i<=10;i++) estresHtml += pill('estres',i,'es_'+i,'radio');
+  document.getElementById('estresContainer').innerHTML = estresHtml;
+
+  // Si llegamos hasta aquí, el JavaScript sí está corriendo: ocultamos el aviso.
+  document.getElementById('avisoJS').style.display = 'none';
+}
+render();
+
+// ════════ EDAD Y FECHAS ════════
+function calcEdad(){
+  const d = +document.getElementById('fnacDia').value;
+  const m = +document.getElementById('fnacMes').value;
+  const y = +document.getElementById('fnacAnio').value;
+  const txt = document.getElementById('edadTxt');
+  if(!d || !m || !y){ txt.textContent=''; return; }
+  const b = new Date(y, m-1, d, 12);
+  const n = new Date();
+  let a = n.getFullYear()-b.getFullYear();
+  if(n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--;
+  txt.textContent = `Edad: ${a} años`;
+}
+function fechaNacTexto(){
+  const d = document.getElementById('fnacDia').value;
+  const mIdx = document.getElementById('fnacMes').value;
+  const y = document.getElementById('fnacAnio').value;
+  if(!d || !mIdx || !y) return '';
+  return `${d} de ${MESES[mIdx-1]} de ${y}`;
+}
+function formatoFechaLegible(iso){
+  if(!iso) return '';
+  const [y,m,d] = iso.split('-').map(Number);
+  if(!y||!m||!d) return iso;
+  return `${d} de ${MESES[m-1]} de ${y}`;
+}
+
+// ════════ HELPERS DE LECTURA ════════
+function val(id){ return (document.getElementById(id).value||'').trim(); }
+function checkedList(name){
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el=>el.value);
+}
+function radioVal(name){
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+function escapeHTML(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ════════ CONSTRUCCIÓN DEL CONTENIDO (HTML) ════════
+function filaHTML(etq, valor){
+  if(!valor) return '';
+  return `<p class="rv-row"><span class="rv-k">${escapeHTML(etq)}</span>${escapeHTML(valor)}</p>`;
+}
+function listaHTML(items, vacio){
+  if(!items.length) return `<p class="rv-row rv-muted">${escapeHTML(vacio)}</p>`;
+  return `<ul class="rv-list">${items.map(i=>`<li>${escapeHTML(i)}</li>`).join('')}</ul>`;
+}
+
+function construirContenidoHTML(){
+  let h = '';
+
+  h += `<div class="rv-card"><div class="rv-title">Datos personales</div>`;
+  h += filaHTML('Nombre completo', val('nombre'));
+  const fnacTxt = fechaNacTexto();
+  const edadTxt = document.getElementById('edadTxt').textContent;
+  if(fnacTxt) h += filaHTML('Fecha de nacimiento', `${fnacTxt}${edadTxt ? ' ('+edadTxt+')' : ''}`);
+  h += filaHTML('Sexo asignado al nacer', val('sexo'));
+  h += filaHTML('Identidad de género', val('genero'));
+  h += filaHTML('Fecha de esta ficha', formatoFechaLegible(val('fentrevista')));
+  h += `</div>`;
+
+  h += `<div class="rv-card"><div class="rv-title">1. Historial médico relevante</div>`;
+  h += filaHTML('Enfermedades actuales o crónicas', val('enfermedadesActuales') || 'No indica.');
+  CONDICIONES.forEach((g,gi) => {
+    const marcadas = [];
+    g.items.forEach((item,ii) => {
+      const id = `cond_${gi}_${ii}`;
+      const chk = document.getElementById(id);
+      if(chk && chk.checked){
+        const anio = val(`anio_${id}`);
+        marcadas.push(anio ? `${item} (año: ${anio})` : item);
+      }
+    });
+    h += `<p class="rv-sub">${escapeHTML(g.grupo)}</p>`;
+    h += listaHTML(marcadas, 'Sin condiciones marcadas.');
+  });
+  h += filaHTML('Otra enfermedad crónica o recurrente', val('otraEnf') || 'No indica.');
+  h += filaHTML('Medicamentos / suplementos regulares', val('medicamentos') || 'No indica.');
+  h += `</div>`;
+
+  h += `<div class="rv-card"><div class="rv-title">2. Exámenes de salud y hábitos de bienestar</div>`;
+  h += `<p class="rv-sub">Exámenes realizados en los últimos 5 años</p>`;
+  h += listaHTML(checkedList('examenes'), 'Ninguno marcado.');
+  h += filaHTML('Otros exámenes relevantes', val('otrosExamenes') || 'No indica.');
+  h += filaHTML('Actividad física regular', val('actividadFisica') || 'No indica.');
+  h += `<p class="rv-sub">Consumo de sustancias</p>`;
+  const sustLineas = [];
+  SUSTANCIAS.forEach(s => {
+    const chk = document.getElementById('sust_'+s.id);
+    if(chk && chk.checked){
+      const det = val('detalle_'+s.id);
+      sustLineas.push(det ? `${s.l} (${det})` : s.l);
+    }
+  });
+  h += listaHTML(sustLineas, 'No indica consumo habitual.');
+  h += `</div>`;
+
+  h += `<div class="rv-card"><div class="rv-title">3. Energía, estado de ánimo y manifestaciones somáticas</div>`;
+  h += filaHTML('Horas de sueño promedio', val('horasSueno'));
+  h += filaHTML('Energía diaria basal', radioVal('energia'));
+  h += filaHTML('Estado de ánimo (últimos 3 meses)', checkedList('animo').join(', ') || 'No indica.');
+  h += filaHTML('Cambios de peso o apetito', radioVal('peso'));
+  h += filaHTML('Síntomas físicos frecuentes', checkedList('sintfis').join(', ') || 'Ninguno marcado.');
+  h += filaHTML('Nivel de estrés percibido (1-10)', radioVal('estres'));
+  h += `</div>`;
+
+  h += `<div class="rv-card"><div class="rv-title">4. Salud hormonal y transiciones biológicas</div>`;
+  h += filaHTML('Etapa actual', radioVal('etapa'));
+  h += filaHTML('Síntomas recurrentes', checkedList('sinthorm').join(', ') || 'Ninguno marcado.');
+  h += filaHTML('Tratamiento o acompañamiento médico', val('ttoHormonal') || 'No indica.');
+  h += `</div>`;
+
+  h += `<div class="rv-card"><div class="rv-title">5. Otros aspectos relevantes</div>`;
+  h += `<p class="rv-row">${escapeHTML(val('relevante') || 'No indica.')}</p>`;
+  h += `</div>`;
+
+  return h;
+}
+
+const ESTILO_SNAPSHOT = `
+:root{--bg:#FAF7F4;--card:#fff;--bd:#E8E0D8;--tx:#2C2420;--mu:#8C7B72;--ac:#CF6642;--al:#F5E6DF;}
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif;margin:0;}
+.wrap{max-width:640px;margin:0 auto;padding:0 0 40px;}
+.hdr{background:var(--ac);color:#fff;padding:22px 20px;text-align:center;}
+.hdr h1{font-size:19px;margin:0 0 4px;font-weight:600;}
+.hdr p{margin:0;font-size:13px;opacity:.92;font-family:system-ui,sans-serif;}
+.rv-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:16px;padding:18px 18px 20px;}
+.rv-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac);font-family:system-ui,sans-serif;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--bd);}
+.rv-row{font-size:14.5px;line-height:1.6;margin:0 0 8px;}
+.rv-k{font-weight:700;color:var(--mu);font-size:12px;font-family:system-ui,sans-serif;text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:2px;}
+.rv-sub{font-size:13px;font-weight:700;color:var(--tx);margin:14px 0 6px;font-family:system-ui,sans-serif;}
+.rv-sub:first-of-type{margin-top:4px;}
+.rv-muted{color:var(--mu);font-style:italic;}
+.rv-list{margin:0 0 8px;padding-left:20px;font-size:14.5px;line-height:1.6;}
+.rv-list li{margin-bottom:3px;}
+`;
+
+function construirSnapshotHTML(){
+  const contenido = construirContenidoHTML();
+  const nombre = val('nombre') || 'Paciente';
+  return `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ficha de Salud y Bienestar — ${escapeHTML(nombre)}</title>
+<style>${ESTILO_SNAPSHOT}</style></head>
+<body><div class="wrap">
+<div class="hdr"><h1>📋 Ficha de Salud y Bienestar</h1><p>Jorge Cucurella · Psicólogo Clínico — respondida por ${escapeHTML(nombre)}</p></div>
+${contenido}
+</div></body></html>`;
+}
+
+// ════════ NAVEGACIÓN ════════
+function verResumen(){
+  if(!val('nombre')){
+    document.getElementById('errNombre').style.display='block';
+    document.getElementById('nombre').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  document.getElementById('errNombre').style.display='none';
+  document.getElementById('resumenView').innerHTML = construirContenidoHTML();
+  document.getElementById('vistaForm').style.display='none';
+  document.getElementById('vistaResumen').style.display='block';
+  window.scrollTo(0,0);
+}
+function volverForm(){
+  document.getElementById('vistaResumen').style.display='none';
+  document.getElementById('vistaForm').style.display='block';
+  window.scrollTo(0,0);
+}
+
+// ════════ ENVÍO ════════
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+async function enviarArchivo(){
+  const htmlDoc = construirSnapshotHTML();
+  const nombreArchivo = `Screening_${(val('nombre')||'Paciente').replace(/[^a-zA-Z0-9]+/g,'_')}_${new Date().toISOString().split('T')[0]}.html`;
+  const file = new File([htmlDoc], nombreArchivo, {type:'text/html'});
+
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{
+      await navigator.share({files:[file], title:'Ficha de Salud y Bienestar'});
+      return;
+    }catch(e){ return; /* la persona canceló el envío */ }
+  }
+  // Respaldo: descargar el archivo para adjuntarlo a mano.
+  const url = URL.createObjectURL(file);
+  const a = document.createElement('a');
+  a.href = url; a.download = nombreArchivo; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Se descargó el archivo. Adjúntalo a tu mensaje para enviarlo.');
+}
+</script>
+</body>
+</html>
