@@ -46,6 +46,13 @@ textarea{resize:vertical;min-height:60px;font-family:system-ui,sans-serif;font-s
 .btn-primary{background:var(--ac);color:#fff;box-shadow:0 2px 10px rgba(207,102,66,.3);}
 .btn-secondary{background:var(--card);border:1px solid var(--bd);color:var(--tx);margin-top:10px;}
 .foot-btns{margin:24px 16px 0;}
+.med-row{border:1px solid var(--bd);border-radius:10px;padding:14px;margin:0 0 12px;background:var(--bg);}
+.med-row .med-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:system-ui,sans-serif;font-size:12px;font-weight:700;color:var(--mu);}
+.med-row .med-del{background:none;border:none;color:var(--mu);font-size:13px;cursor:pointer;font-family:system-ui,sans-serif;}
+.med-row input[type=text],.med-row select{margin-bottom:10px;background:var(--card);}
+.med-chk{display:flex;align-items:center;gap:8px;font-size:13px;font-family:system-ui,sans-serif;color:var(--mu);margin:-4px 0 12px;}
+.med-chk input{width:auto;margin:0;}
+.btn-add{background:none;border:1px dashed var(--ac);color:var(--ac);border-radius:20px;padding:11px 18px;font-family:system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-bottom:12px;}
 .err{color:#B23A3A;font-size:13px;font-family:system-ui,sans-serif;margin-top:8px;display:none;}
 #vistaResumen{display:none;}
 .rv-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:16px;padding:18px 18px 20px;}
@@ -99,7 +106,14 @@ textarea{resize:vertical;min-height:60px;font-family:system-ui,sans-serif;font-s
         <div class="hint" style="margin:4px 0 10px;">Además, marca a continuación las condiciones específicas que hayan sido diagnosticadas por un profesional y, si lo recuerdas, indica el año aproximado.</div>
         <div id="condContainer"></div>
         <div class="field" style="margin-top:16px;"><label class="lbl">¿Otra enfermedad crónica o recurrente que no esté en la lista? ¿Cuál o cuáles?</label><textarea id="otraEnf"></textarea></div>
-        <div class="field"><label class="lbl">Medicamentos o suplementos que tomas actualmente de forma regular</label><textarea id="medicamentos" placeholder="Nombre, dosis y motivo. Deja en blanco si no tomas ninguno."></textarea></div>
+        <div class="field"><label class="lbl">Medicamentos, suplementos o productos naturales que tomas actualmente</label>
+          <div class="hint" style="margin:0 0 12px;line-height:1.5;">Incluye lo que te recetó un médico y también lo que tomas por tu cuenta: vitaminas, hierbas, calmantes, pastillas para dormir, etc. Si puedes, ten a mano la caja o la receta. Si no recuerdas el nombre o la dosis, marca «No recuerdo» y sigue: lo revisaremos juntos en la consulta.</div>
+          <div class="med-chk" style="margin:0 0 12px;"><input type="checkbox" id="medNinguno" onchange="medToggleNinguno()"><label for="medNinguno">No tomo ningún medicamento ni suplemento</label></div>
+          <div id="medsContainer"></div>
+          <button type="button" class="btn-add" onclick="medAgregar()">+ Agregar un medicamento</button>
+          <label class="lbl" style="margin-top:6px;">Algo más que quieras contarme sobre esto (opcional)</label>
+          <textarea id="medicamentos" placeholder="Por ejemplo: lo dejé hace poco, lo tomo solo cuando lo necesito, me lo cambiaron..."></textarea>
+        </div>
       </div>
 
       <div class="card">
@@ -246,6 +260,65 @@ function render(){
 }
 render();
 
+// ════════ MEDICAMENTOS ════════
+const ORIGEN_MED = [['','— Elige —'],['medico','Me lo recetó un médico'],['farmacia','Me lo recomendaron en la farmacia'],['otra','Me lo recomendó otra persona'],['propia','Lo tomo por mi cuenta']];
+let medContador = 0;
+function medAgregar(){
+  medContador++;
+  const n = medContador;
+  const div = document.createElement('div');
+  div.className = 'med-row';
+  div.innerHTML = `
+    <div class="med-top"><span class="med-num"></span><button type="button" class="med-del" onclick="medQuitar(this)">Quitar ✕</button></div>
+    <label class="lbl">Nombre</label>
+    <input type="text" class="med-nombre" placeholder="Como aparece en la caja">
+    <div class="med-chk"><input type="checkbox" class="med-nn" id="mnn_${n}"><label for="mnn_${n}">No recuerdo el nombre</label></div>
+    <label class="lbl">¿Para qué lo tomas?</label>
+    <input type="text" class="med-para">
+    <label class="lbl">¿Desde cuándo?</label>
+    <input type="text" class="med-desde" placeholder="Por ejemplo: hace 2 años, desde marzo">
+    <label class="lbl">Dosis</label>
+    <input type="text" class="med-dosis" placeholder="Por ejemplo: 50 mg, 1 comprimido, 20 gotas">
+    <div class="med-chk"><input type="checkbox" class="med-dn" id="mdn_${n}"><label for="mdn_${n}">No recuerdo la dosis</label></div>
+    <label class="lbl">¿Cómo lo tomas? ¿Cuántas veces al día?</label>
+    <input type="text" class="med-frec">
+    <label class="lbl">¿Quién te lo indicó?</label>
+    <select class="med-origen">${ORIGEN_MED.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`;
+  document.getElementById('medsContainer').appendChild(div);
+  medRenumerar();
+  document.getElementById('medNinguno').checked = false;
+  div.querySelector('.med-nombre').focus();
+}
+function medQuitar(btn){ btn.closest('.med-row').remove(); medRenumerar(); }
+function medRenumerar(){
+  document.querySelectorAll('#medsContainer .med-row').forEach((r,i)=>{ r.querySelector('.med-num').textContent = 'Medicamento ' + (i+1); });
+}
+function medToggleNinguno(){
+  if(document.getElementById('medNinguno').checked){ document.getElementById('medsContainer').innerHTML = ''; }
+}
+function medLista(){
+  const filas = [];
+  document.querySelectorAll('#medsContainer .med-row').forEach(r=>{
+    const g = c => (r.querySelector(c).value||'').trim();
+    const nn = r.querySelector('.med-nn').checked, dn = r.querySelector('.med-dn').checked;
+    const it = { nombre: nn ? '' : g('.med-nombre'), nombreNoRecuerda: nn, para: g('.med-para'), desde: g('.med-desde'),
+      dosis: dn ? '' : g('.med-dosis'), dosisNoRecuerda: dn, frecuencia: g('.med-frec'), origen: r.querySelector('.med-origen').value };
+    if(it.nombre || it.nombreNoRecuerda || it.para || it.dosis) filas.push(it);
+  });
+  return filas;
+}
+function medTextoLinea(m){
+  const origen = (ORIGEN_MED.find(o=>o[0]===m.origen)||['',''])[1];
+  const partes = [];
+  partes.push(m.nombre || '(no recuerda el nombre)');
+  if(m.dosis) partes.push('dosis: ' + m.dosis); else if(m.dosisNoRecuerda) partes.push('dosis: no la recuerda');
+  if(m.frecuencia) partes.push(m.frecuencia);
+  if(m.para) partes.push('para: ' + m.para);
+  if(m.desde) partes.push('desde: ' + m.desde);
+  if(m.origen) partes.push(origen.toLowerCase());
+  return partes.join(' · ');
+}
+
 // ════════ EDAD Y FECHAS ════════
 function calcEdad(){
   const d = +document.getElementById('fnacDia').value;
@@ -327,7 +400,12 @@ function construirContenidoHTML(){
     h += listaHTML(marcadas, 'Sin condiciones marcadas.');
   });
   h += filaHTML('Otra enfermedad crónica o recurrente', val('otraEnf') || 'No indica.');
-  h += filaHTML('Medicamentos / suplementos regulares', val('medicamentos') || 'No indica.');
+  h += `<p class="rv-sub">Medicamentos, suplementos o productos naturales</p>`;
+  const medsOk = medLista();
+  if(document.getElementById('medNinguno').checked) h += `<p class="rv-row">No toma ningún medicamento ni suplemento.</p>`;
+  else if(!medsOk.length) h += `<p class="rv-row rv-muted">No indica.</p>`;
+  else h += listaHTML(medsOk.map(medTextoLinea), 'No indica.');
+  h += filaHTML('Comentarios sobre medicamentos', val('medicamentos'));
   h += `</div>`;
 
   h += `<div class="rv-card"><div class="rv-title">2. Exámenes de salud y hábitos de bienestar</div>`;
@@ -390,6 +468,7 @@ body{background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',
 
 function construirSnapshotHTML(){
   const contenido = construirContenidoHTML();
+  const datosMed = JSON.stringify({version:1, fecha: val('fentrevista'), ninguno: document.getElementById('medNinguno').checked, items: medLista()}).replace(/</g,'\u003c');
   const nombre = val('nombre') || 'Paciente';
   return `<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -398,7 +477,9 @@ function construirSnapshotHTML(){
 <body><div class="wrap">
 <div class="hdr"><h1>📋 Ficha de Salud y Bienestar</h1><p>Jorge Cucurella · Psicólogo Clínico — respondida por ${escapeHTML(nombre)}</p></div>
 ${contenido}
-</div></body></html>`;
+</div>
+<script type="application/json" id="datos-medicamentos">${datosMed}<\/script>
+</body></html>`;
 }
 
 // ════════ NAVEGACIÓN ════════
